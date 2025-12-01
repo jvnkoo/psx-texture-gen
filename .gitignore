@@ -1,40 +1,56 @@
-# Node.js
-node_modules/
-dist/
-build/
-.env
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# MongoDB
-.DS_Store # macOS specific
-dump/ # MongoDB database dumps
-data/db/ # MongoDB local data directory
-
-# React
+# Node.js
+node_modules/
+dist/
+dist-ssr/
 build/
+*.local
+
+# Environment variables
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-# For Create React App (CRA)
+
+# MongoDB
+.DS_Store
+dump/
+data/db/
+
+# React / Create React App
 src/reportWebVitals.js
 src/setupTests.js
 
 # IDE-specific files
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Logs and temporary files
-*.log
+# OS files
+.DS_Store
+
+# Temporary files
 tmp/
 temp/
 
-# Test coverage reports
+# Test coverage
 coverage/
 
-# Uploads or user-generated content (if stored locally)
+# Uploads or user-generated content
 uploads/
