@@ -269,10 +269,23 @@ const App = () => {
             {images.length > 0 && (
               <div className="card bg-base-200 shadow-xl">
                 <div className="card-body p-4">
-                  <h3 className="card-title text-lg mb-3">
-                    Available Images ({images.length})
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 max-h-96 overflow-y-auto">
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="card-title text-lg">
+                      Available Images ({images.length})
+                    </h3>
+                    <button
+                      onClick={() => {
+                        if (images.length > 0) {
+                          setSelectedImage(images[0]);
+                          toast("Reset to first image");
+                        }
+                      }}
+                      className="btn btn-xs btn-ghost"
+                    >
+                      Reset Selection
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 max-h-36 overflow-y-auto">
                     {images.map((img, index) => (
                       <div
                         key={index}
