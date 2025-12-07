@@ -64,6 +64,28 @@ const CanvasImageEffects = ({
     return { width, height };
   };
 
+  const applyPixelation = (ctx, img, width, height, pixelSize) => {
+    const pixelation = Math.max(1, Math.min(100, pixelSize));
+    const size = pixelation / 100;
+    const w = width * size;
+    const h = height * size;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Turn off image aliasing
+    ctx.msImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+
+    // Draw original image at fraction of size
+    ctx.drawImage(img, 0, 0, w, h);
+
+    // Enlarge the minimized image to full size
+    ctx.drawImage(canvasRef.current, 0, 0, w, h, 0, 0, width, height);
+  };
+
   const applyNoise = (ctx, width, height, noiseScale, noiseOpacity) => {
     const imageData = ctx.getImageData(0, 0, width, height);
     const data = imageData.data;

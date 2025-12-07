@@ -3,7 +3,8 @@ import CanvasImageEffects from "./components/CanvasImageEffects";
 import { searchWikimediaImages, getFallbackImages } from "./utils/ImageSearch";
 
 const App = () => {
-  const [noiseScale, setNoiseScale] = useState(0.01);
+  const [noiseScale, setNoiseScale] = useState(0.0);
+  const [pixelSize, setPixelSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -55,6 +56,7 @@ const App = () => {
           Noise Texture Generator
         </h1>
 
+        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Left Sidebar - Controls */}
           <div className="lg:col-span-3 space-y-4">
@@ -71,13 +73,51 @@ const App = () => {
                   </label>
                   <input
                     type="range"
-                    min="0.001"
+                    min="0.000"
                     max="0.1"
                     step="0.001"
                     value={noiseScale}
                     onChange={(e) => setNoiseScale(parseFloat(e.target.value))}
                     className="range range-primary"
+                    onChange={(e) => {
+                      setNoiseScale(parseFloat(e.target.value));
+                      }
+                    }}
+                    className="range range-accent"
                   />
+                  <div className="flex justify-between text-xs px-2 mt-1">
+                    <span>None</span>
+                    <span>Max</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pixelation Control */}
+              <div className="form-control p-4">
+                <label className="label">
+                  <span className="label-text">Pixelation</span>
+                  <span className="badge badge-neutral">{pixelSize}</span>
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  step="1"
+                  value={pixelSize}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    setPixelSize(value);
+                    if (value === 1) {
+                      toast("Pixelation disabled", {
+                        icon: "🖼️",
+                      });
+                    }
+                  }}
+                  className="range range-accent"
+                />
+                <div className="flex justify-between text-xs px-2 mt-1">
+                  <span>Max</span>
+                  <span>Original</span>
                 </div>
               </div>
             </div>
@@ -97,7 +137,7 @@ const App = () => {
                   <button
                     type="submit"
                     disabled={isLoading || !searchQuery.trim()}
-                    className="btn btn-primary w-full"
+                    className="btn btn-primary w-full bg-base-100 hover:bg-base-300 mt-2"
                   >
                     {isLoading ? (
                       <span className="loading loading-spinner"></span>
@@ -125,18 +165,22 @@ const App = () => {
           </div>
 
           {/* Main Content Area */}
+          {/* Right Column */}
           <div className="lg:col-span-9 space-y-4">
             {/* Image Display */}
             <div className="card bg-base-200 shadow-xl">
               <div className="card-body p-4">
                 <div className="flex justify-center items-center">
                   {selectedImage ? (
-                    <CanvasImage
-                      src={selectedImage}
-                      noiseScale={noiseScale}
-                      maxWidth={800}
-                      maxHeight={500}
-                    />
+                    <div className="relative">
+                      <CanvasImageEffects
+                        src={selectedImage}
+                        noiseScale={noiseScale}
+                        pixelSize={pixelSize}
+                        maxWidth={500}
+                        maxHeight={500}
+                      />
+                    </div>
                   ) : (
                     <div className="w-full h-96 bg-base-300 rounded-lg flex items-center justify-center">
                       <p className="text-base-content opacity-50 text-center">
