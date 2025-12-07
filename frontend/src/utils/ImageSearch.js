@@ -11,6 +11,20 @@ export const searchWikimediaImages = async (query, batch = 0) => {
     // CORS proxy is required because Wikimedia API blocks direct browser requests
     const proxyUrl = "https://api.allorigins.win/get?url=";
 
+    // Generate a random seed
+    const randomSeed = Date.now() + Math.random();
+
+    // Generate a random search query
+    const searchVariations = [
+      query,
+      `filetype:image ${query}`,
+      `"${query}"`,
+      `${query} commons`,
+    ];
+
+    const randomSearch =
+      searchVariations[Math.floor(Math.random() * searchVariations.length)];
+
     // Wikimedia API endpoint with query parameters:
     const apiUrl = `https://commons.wikimedia.org/w/api.php?${new URLSearchParams(
       {
@@ -18,9 +32,9 @@ export const searchWikimediaImages = async (query, batch = 0) => {
         format: "json", // Response format - JSON
         generator: "search", // Use search generator to find pages
         gsrnamespace: 6, // Namespace 6 = File namespace (images only)
-        gsrsearch: query, // The actual search query from user
-        gsrlimit: 20, // Maximum number of results per request
-        gsroffset: batch * 20, // Offset for pagination: batch 0 = 0, batch 1 = 20, etc.
+        gsrsearch: randomSearch, // The actual search query from user
+        gsrlimit: 50, // Maximum number of results per request
+        gsroffset: Math.floor(Math.random() * 50), // Offset for pagination: batch 0 = 0, batch 1 = 20, etc.
         prop: "imageinfo", // Request image information property
         iiprop: "url", // Include image URLs in the response
         iiurlwidth: 400, // Preferred thumbnail width in pixels
