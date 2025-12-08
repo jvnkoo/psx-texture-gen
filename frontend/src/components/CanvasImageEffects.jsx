@@ -4,7 +4,6 @@ import { createNoise2D } from "simplex-noise";
 const CanvasImageEffects = ({
   src,
   noiseScale = 0.01,
-  noiseOpacity = 0.5,
   pixelSize,
   maxWidth,
   maxHeight,
@@ -35,8 +34,8 @@ const CanvasImageEffects = ({
       }
 
       // Apply noise on top
-      if (noiseScale && noiseScale > 0 && noiseOpacity > 0) {
-        applyNoise(ctx, width, height, noiseScale, noiseOpacity);
+      if (noiseScale && noiseScale > 0) {
+        applyNoise(ctx, width, height, noiseScale);
       }
     };
 
@@ -100,9 +99,10 @@ const CanvasImageEffects = ({
       const noise = noise2D(x * noiseScale, y * noiseScale);
       const color = Math.floor((noise + 1) * 128);
 
-      // Blend noise with original pixel colors
-      const opacity = Math.max(0, Math.min(1, noiseOpacity)); // Ensure opacity is between 0-1
+      // Use noiseScale as opacity/intensity
+      const opacity = noiseScale;
 
+      // Blend noise with original pixel colors
       // Red channel
       data[i] = data[i] * (1 - opacity) + color * opacity;
       // Green channel
