@@ -587,37 +587,62 @@ const App = () => {
           </div>
 
           {/* Right Column */}
-          <div className="lg:col-span-9 space-y-4">
-            {/* Image Display */}
-            <div className="card bg-base-200 shadow-xl">
+          <div className="lg:col-span-9 space-y-6">
+            {/* Image Display - Fixed at top */}
+            <div className="card bg-base-200 shadow-xl sticky top-24 z-20">
               <div className="card-body p-4">
                 <div className="flex justify-center items-center">
                   {selectedImage ? (
-                    <div className="relative">
-                      <CanvasImageEffects
-                        src={selectedImage}
-                        noiseScale={noiseScale}
-                        pixelSize={pixelSize}
-                        maxWidth={500}
-                        maxHeight={500}
-                        dithering={dithering}
-                        ditherDepth={ditherDepth}
-                        ditherIntensity={ditherIntensity}
-                        ditherType={ditherType}
-                        rgbShift={rgbShift}
-                        rgbShiftAmount={rgbShiftAmount}
-                        vertexWobble={vertexWobble}
-                        vertexIntensity={vertexIntensity}
-                        paletteSize={paletteSize}
-                        texturePageSize={texturePageSize}
-                        subpixelArtifacts={subpixelArtifacts}
-                        subpixelIntensity={subpixelIntensity}
-                        perspectiveArtifacts={perspectiveArtifacts}
-                        perspectiveIntensity={perspectiveIntensity}
-                      />
+                    <div className="relative w-full max-w-2xl mx-auto">
+                      {/* Responsive container with max dimensions */}
+                      <div
+                        className="relative w-full"
+                        style={{
+                          width: "100%",
+                          maxHeight: "70vh",
+                          minHeight: "400px",
+                          overflow: "hidden",
+                          borderRadius: "0.5rem",
+                          backgroundColor:
+                            "var(--fallback-b2,oklch(var(--b2)))",
+                        }}
+                      >
+                        {/* Centering wrapper */}
+                        <div className="absolute inset-0 flex items-center justify-center p-4">
+                          <CanvasImageEffects
+                            src={selectedImage}
+                            noiseScale={noiseScale}
+                            pixelSize={pixelSize}
+                            maxWidth={800}
+                            maxHeight={600}
+                            dithering={dithering}
+                            ditherDepth={ditherDepth}
+                            ditherIntensity={ditherIntensity}
+                            ditherType={ditherType}
+                            rgbShift={rgbShift}
+                            rgbShiftAmount={rgbShiftAmount}
+                            vertexWobble={vertexWobble}
+                            vertexIntensity={vertexIntensity}
+                            paletteSize={paletteSize}
+                            texturePageSize={texturePageSize}
+                            subpixelArtifacts={subpixelArtifacts}
+                            subpixelIntensity={subpixelIntensity}
+                            perspectiveArtifacts={perspectiveArtifacts}
+                            perspectiveIntensity={perspectiveIntensity}
+                            // Canvas sizing
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              width: "auto",
+                              height: "auto",
+                              display: "block",
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   ) : (
-                    <div className="w-full h-96 bg-base-300 rounded-lg flex items-center justify-center">
+                    <div className="w-full max-w-2xl h-[400px] bg-base-300 rounded-lg flex items-center justify-center mx-auto">
                       <p className="text-base-content opacity-50 text-center">
                         Search for an image to begin
                       </p>
@@ -627,9 +652,9 @@ const App = () => {
               </div>
             </div>
 
-            {/* Image Thumbnails */}
+            {/* Image Thumbnails - Simple sticky below canvas */}
             {images.length > 0 && (
-              <div className="card bg-base-200 shadow-xl">
+              <div className="card bg-base-200 shadow-xl sticky top-[calc(100vh-400px)] z-10 mt-4">
                 <div className="card-body p-4">
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="card-title text-lg">
