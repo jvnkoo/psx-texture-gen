@@ -131,36 +131,37 @@ const App = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Left Sidebar - Controls */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Noise Control Card */}
+            {/* Search Card */}
             <div className="card bg-base-200 shadow-xl">
               <div className="card-body p-4">
-                <h2 className="card-title text-lg">Noise Settings</h2>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Intensity</span>
-                    <span className="badge badge-neutral">
-                      {noiseScale.toFixed(3)}
-                    </span>
-                  </label>
+                <h2 className="card-title text-lg">Image Search</h2>
+                <form onSubmit={handleSearch} className="form-control gap-2">
                   <input
-                    type="range"
-                    min="0.000"
-                    max="0.1"
-                    step="0.001"
-                    value={noiseScale}
-                    onChange={(e) => {
-                      setNoiseScale(parseFloat(e.target.value));
-                      if (parseFloat(e.target.value) === 0) {
-                        toast("Noise disabled", {
-                          icon: "??",
-                        });
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search images..."
+                    className="input input-bordered w-full px-4"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && searchQuery.trim()) {
+                        toast.loading(`Searching for "${searchQuery}"...`);
                       }
                     }}
-                    className="range range-accent"
                   />
-                  <div className="flex justify-between text-xs px-2 mt-1">
-                    <span>None</span>
-                    <span>Max</span>
+                  <button
+                    type="submit"
+                    disabled={isLoading || !searchQuery.trim()}
+                    className="btn btn-primary w-full bg-base-100 hover:bg-base-300 mt-2"
+                  >
+                    {isLoading ? (
+                      <span className="loading loading-spinner"></span>
+                    ) : (
+                      "Search"
+                    )}
+                  </button>
+                </form>
+              </div>
+            </div>
                   </div>
                 </div>
               </div>
@@ -277,35 +278,12 @@ const App = () => {
               </div>
             </div>
 
-            {/* Search Card */}
             <div className="card bg-base-200 shadow-xl">
               <div className="card-body p-4">
-                <h2 className="card-title text-lg">Image Search</h2>
-                <form onSubmit={handleSearch} className="form-control gap-2">
                   <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search images..."
-                    className="input input-bordered w-full px-4"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && searchQuery.trim()) {
-                        toast.loading(`Searching for "${searchQuery}"...`);
                       }
                     }}
                   />
-                  <button
-                    type="submit"
-                    disabled={isLoading || !searchQuery.trim()}
-                    className="btn btn-primary w-full bg-base-100 hover:bg-base-300 mt-2"
-                  >
-                    {isLoading ? (
-                      <span className="loading loading-spinner"></span>
-                    ) : (
-                      "Search"
-                    )}
-                  </button>
-                </form>
               </div>
             </div>
 
