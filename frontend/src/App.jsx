@@ -18,6 +18,7 @@ const App = () => {
   const [vertexWobble, setVertexWobble] = useState(false);
   const [vertexIntensity, setVertexIntensity] = useState(0.015);
   const [paletteSize, setPaletteSize] = useState(256);
+  const [texturePageSize, setTexturePageSize] = useState(128);
   const [perspectiveArtifacts, setPerspectiveArtifacts] = useState(false);
   const [perspectiveIntensity, setPerspectiveIntensity] = useState(0.2);
 
@@ -118,6 +119,7 @@ const App = () => {
                   setVertexWobble(false);
                   setVertexIntensity(0.015);
                   setPaletteSize(256);
+                  setTexturePageSize(128);
                   setPerspectiveArtifacts(false);
                   setPerspectiveIntensity(0.2);
                   toast.success("Settings reset to default PSX preset");
@@ -413,10 +415,35 @@ const App = () => {
                   </label>
                 </div>
 
+                {/* Texture Page Artifacts */}
+                <div className="form-control mt-2">
+                  <label className="label">
+                    <span className="label-text">Texture Page Size</span>
+                    <span className="badge badge-neutral">
+                      {texturePageSize}
+                    </span>
+                  </label>
                   <input
+                    type="range"
+                    min="0"
+                    max="512"
+                    step="16"
+                    value={texturePageSize}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      setTexturePageSize(value);
+                      if (value === 0) {
+                        toast("Texture page artifacts disabled");
                       }
                     }}
+                    className="range range-accent"
                   />
+                  <div className="flex justify-between text-xs px-2 mt-1">
+                    <span>Off</span>
+                    <span>512px</span>
+                  </div>
+                </div>
+
 
                 {/* Perspective Artifacts */}
                 <div className="flex items-center justify-between mb-2">
@@ -503,6 +530,7 @@ const App = () => {
                         vertexWobble={vertexWobble}
                         vertexIntensity={vertexIntensity}
                         paletteSize={paletteSize}
+                        texturePageSize={texturePageSize}
                         perspectiveArtifacts={perspectiveArtifacts}
                         perspectiveIntensity={perspectiveIntensity}
                       />

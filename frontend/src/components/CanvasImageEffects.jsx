@@ -14,6 +14,7 @@ const CanvasImageEffects = ({
   vertexWobble = false,
   vertexIntensity = 0.015,
   paletteSize = 256,
+  texturePageSize = 128,
   perspectiveArtifacts = false,
   perspectiveIntensity = 0.2,
 }) => {
@@ -66,7 +67,11 @@ const CanvasImageEffects = ({
         applyPerspectiveArtifacts(ctx, width, height, perspectiveIntensity);
       }
 
-      // Apply noise on top
+      // Apply texture page boundary artifacts
+      if (texturePageSize > 0) {
+        applyTexturePageArtifacts(ctx, width, height, texturePageSize);
+      }
+
       if (noiseScale && noiseScale > 0) {
         applyNoise(ctx, width, height, noiseScale);
       }
@@ -88,6 +93,7 @@ const CanvasImageEffects = ({
     vertexWobble,
     vertexIntensity,
     paletteSize,
+    texturePageSize,
     perspectiveArtifacts,
     perspectiveIntensity,
   ]);
@@ -306,6 +312,37 @@ const CanvasImageEffects = ({
     }
 
     ctx.putImageData(outputData, 0, 0);
+  };
+
+  const applyTexturePageArtifacts = (ctx, width, height, pageSize = 256) => {
+    // Simulate VRAM texture page limitations
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+
+        // Artifacts at texture page boundaries
+        if (x % pageSize === 0 || y % pageSize === 0) {
+          // Vertical/horizontal line artifacts between texture pages
+          if (Math.random() > 0.7) {
+            data[idx] = 0;
+            data[idx + 1] = 0;
+            data[idx + 2] = 0;
+          }
+        }
+
+        // Texture alignment artifacts (PSX often used 16/32 pixel alignment)
+        if ((x % 16 === 0 || y % 16 === 0) && Math.random() > 0.9) {
+          // Color shift at alignment boundaries
+          data[idx] = Math.min(255, data[idx] + 30);
+          data[idx + 2] = Math.max(0, data[idx + 2] - 20);
+        }
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
   };
 
       }
