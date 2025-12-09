@@ -11,6 +11,7 @@ const CanvasImageEffects = ({
   ditherDepth = 32,
   ditherIntensity = 1.0,
   ditherType = "bayer", // "bayer" or "psx"
+  paletteSize = 256,
 }) => {
   const canvasRef = useRef(null);
   const noise2D = createNoise2D();
@@ -30,11 +31,16 @@ const CanvasImageEffects = ({
       canvas.width = width;
       canvas.height = height;
 
-      // Apply pixelation first
+      // Apply pixelation first (foundation for PSX look)
       if (pixelSize && pixelSize > 1) {
         applyPixelation(ctx, img, width, height, pixelSize);
       } else {
         ctx.drawImage(img, 0, 0, width, height);
+      }
+
+      // Apply color palettization (PSX color depth reduction)
+      if (paletteSize < 256) {
+        applyPalettization(ctx, width, height, paletteSize);
       }
 
       // Apply dithering based on selected type
@@ -66,6 +72,7 @@ const CanvasImageEffects = ({
     ditherDepth,
     ditherIntensity,
     ditherType,
+    paletteSize,
   ]);
 
   const calculateDimensions = (img, maxWidth, maxHeight) => {
@@ -107,6 +114,34 @@ const CanvasImageEffects = ({
 
     // Enlarge the minimized image to full size
     ctx.drawImage(canvasRef.current, 0, 0, w, h, 0, 0, width, height);
+  };
+
+  const applyPalettization = (ctx, width, height, paletteSize = 256) => {
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+
+    // Reduce color depth to simulate PSX 15-bit color (5-5-5 bits)
+    for (let i = 0; i < data.length; i += 4) {
+      // Quantize to 5 bits per channel (32 levels instead of 256)
+      data[i] = Math.floor(data[i] / 8) * 8; // Red: 0-31 steps
+      data[i + 1] = Math.floor(data[i + 1] / 8) * 8; // Green
+      data[i + 2] = Math.floor(data[i + 2] / 8) * 8; // Blue
+
+      // Force limited palette per texture (common PSX constraint)
+      if (paletteSize < 256) {
+        // Create indexed color effect
+        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        const paletteIndex = Math.floor(brightness / (256 / paletteSize));
+        const limitedColor = paletteIndex * (256 / paletteSize);
+
+        // Apply limited color palette
+        data[i] = limitedColor;
+        data[i + 1] = limitedColor;
+        data[i + 2] = limitedColor;
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
   };
 
   const applyColorDithering = (ctx, width, height, depth, intensity) => {
