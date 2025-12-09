@@ -14,6 +14,8 @@ const App = () => {
   const [dithering, setDithering] = useState(false);
   const [ditherDepth, setDitherDepth] = useState(32);
   const [ditherIntensity, setDitherIntensity] = useState(1.0);
+  const [rgbShift, setRgbShift] = useState(false);
+  const [rgbShiftAmount, setRgbShiftAmount] = useState(5);
   const [ditherType, setDitherType] = useState("bayer");
   const [vertexWobble, setVertexWobble] = useState(false);
   const [vertexIntensity, setVertexIntensity] = useState(0.015);
@@ -116,6 +118,8 @@ const App = () => {
                   setPixelSize(10);
                   setDithering(false);
                   setDitherType("bayer");
+                  setRgbShift(false);
+                  setRgbShiftAmount(3);
                   setVertexWobble(false);
                   setVertexIntensity(0.015);
                   setPaletteSize(256);
@@ -248,7 +252,59 @@ const App = () => {
             </div>
 
             {/* RGB Shift Control Card */}
+            <div className="card bg-base-200 shadow-xl">
+              <div className="card-body p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="card-title text-base">RGB Shift</h2>
+                  <label className="cursor-pointer flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={rgbShift}
+                      onChange={(e) => {
+                        setRgbShift(e.target.checked);
+                        if (e.target.checked) {
+                          toast.success("RGB Shift enabled", {
+                            duration: 1500,
+                            icon: "🌈",
+                          });
+                        }
+                      }}
+                      className="toggle toggle-primary"
+                    />
+                    <span className="text-sm font-medium">
+                      {rgbShift ? "ON" : "OFF"}
+                    </span>
+                  </label>
                 </div>
+
+                {rgbShift && (
+                  <div className="space-y-4 mt-2">
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text">Shift Amount</span>
+                        <span className="badge badge-neutral">
+                          {rgbShiftAmount}
+                        </span>
+                      </label>
+                      <input
+                        type="range"
+                        min="1"
+                        max="30"
+                        step="1"
+                        value={rgbShiftAmount}
+                        onChange={(e) => {
+                          setRgbShiftAmount(parseInt(e.target.value));
+                        }}
+                        className="range range-secondary"
+                        disabled={!rgbShift}
+                      />
+                      <div className="flex justify-between text-xs px-2 mt-1">
+                        <span>Min</span>
+                        <span>Max</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -527,6 +583,8 @@ const App = () => {
                         ditherDepth={ditherDepth}
                         ditherIntensity={ditherIntensity}
                         ditherType={ditherType}
+                        rgbShift={rgbShift}
+                        rgbShiftAmount={rgbShiftAmount}
                         vertexWobble={vertexWobble}
                         vertexIntensity={vertexIntensity}
                         paletteSize={paletteSize}

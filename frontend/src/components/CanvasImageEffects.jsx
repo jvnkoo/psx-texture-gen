@@ -11,6 +11,8 @@ const CanvasImageEffects = ({
   ditherDepth = 32,
   ditherIntensity = 1.0,
   ditherType = "bayer", // "bayer" or "psx"
+  rgbShift = false,
+  rgbShiftAmount = 3,
   vertexWobble = false,
   vertexIntensity = 0.015,
   paletteSize = 256,
@@ -72,6 +74,12 @@ const CanvasImageEffects = ({
         applyTexturePageArtifacts(ctx, width, height, texturePageSize);
       }
 
+      // Apply RGB shift effect (color channel misalignment)
+      if (rgbShift && rgbShiftAmount > 0) {
+        applyRgbShift(ctx, width, height, rgbShiftAmount);
+      }
+
+      // Apply noise on top (subtle analog noise)
       if (noiseScale && noiseScale > 0) {
         applyNoise(ctx, width, height, noiseScale);
       }
@@ -90,6 +98,8 @@ const CanvasImageEffects = ({
     ditherDepth,
     ditherIntensity,
     ditherType,
+    rgbShift,
+    rgbShiftAmount,
     vertexWobble,
     vertexIntensity,
     paletteSize,
@@ -343,6 +353,54 @@ const CanvasImageEffects = ({
     }
 
     ctx.putImageData(imageData, 0, 0);
+  };
+
+  const applyRgbShift = (ctx, width, height, amount) => {
+    // Get original image data
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+    const outputData = ctx.createImageData(width, height);
+
+    // Calculate shift based on amount (more subtle for PSX style)
+    const shiftX = Math.floor(amount / 3);
+    const shiftY = Math.floor(amount / 6);
+
+    // Create RGB shift effect
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const outputIndex = (y * width + x) * 4;
+
+        // Get colors from shifted positions (PSX-style subtle misalignment)
+        const redX = Math.max(0, Math.min(width - 1, x + shiftX));
+        const redY = Math.max(0, Math.min(height - 1, y + shiftY));
+        const redIndex = (redY * width + redX) * 4;
+
+        const blueX = Math.max(0, Math.min(width - 1, x - shiftX));
+        const blueY = Math.max(0, Math.min(height - 1, y - shiftY));
+        const blueIndex = (blueY * width + blueX) * 4;
+
+        const greenIndex = (y * width + x) * 4; // Green stays mostly centered
+
+        // Combine shifted channels (PSX often had blue channel bleeding)
+        outputData.data[outputIndex] = data[redIndex]; // Red from shifted position
+        outputData.data[outputIndex + 1] = data[greenIndex + 1]; // Green from center
+        outputData.data[outputIndex + 2] = data[blueIndex + 2]; // Blue from opposite shift
+        outputData.data[outputIndex + 3] = data[outputIndex + 3]; // Alpha unchanged
+
+        // Add subtle PSX-style color bleed
+        if (Math.random() < 0.1) {
+          // 10% chance for color bleed effect
+          outputData.data[outputIndex] = Math.min(255, data[redIndex] + 30);
+          outputData.data[outputIndex + 2] = Math.min(
+            255,
+            data[blueIndex + 2] + 20
+          );
+        }
+      }
+    }
+
+    // Apply the effect
+    ctx.putImageData(outputData, 0, 0);
   };
 
       }
