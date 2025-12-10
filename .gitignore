@@ -54,3 +54,5 @@ coverage/
 
 # Uploads or user-generated content
 uploads/
+
+.md
