@@ -6,7 +6,9 @@
 
 > Transform images into authentic PS1-era graphics with hardware-accurate visual effects
 
-**⚠️ My first JavaScript project!**
+**⚠️ pre-release version!**
+
+<img width="1919" height="936" alt="image" src="https://github.com/user-attachments/assets/fe353339-3e53-4fc3-8962-33b6472fdf54" />
 
 ## 🚀 Quick Start
 
