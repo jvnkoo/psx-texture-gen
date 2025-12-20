@@ -1,12 +1,10 @@
 # PSX texture generator 
-![WIP](https://img.shields.io/badge/Status-Early%20Development-yellow)
+![WIP](https://img.shields.io/badge/Status-⚠️%20pre--release%20version!-yellow)
 ![No AI](https://img.shields.io/badge/No%20AI-Pure%20Canvas-green)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=flat&logo=github&logoColor=white)
 
 > Transform images into authentic PS1-era graphics with hardware-accurate visual effects
-
-**⚠️ pre-release version!**
 
 <img width="1919" height="936" alt="image" src="https://github.com/user-attachments/assets/fe353339-3e53-4fc3-8962-33b6472fdf54" />
 
