@@ -57,7 +57,7 @@ Each effect simulates a specific PS1 hardware limitation.
 ## TODO
 - [ ] add crop feature
 - [ ] add image upload
-- [ ] refactor code
+- [x] refactor code
 - [ ] add more search services
 - [ ] make the elements fit on the screen
 
