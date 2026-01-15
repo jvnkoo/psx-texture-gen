@@ -1,12 +1,12 @@
 # PSX texture generator 
-![WIP](https://img.shields.io/badge/Status-⚠️%20pre--release%20version!-yellow)
-![No AI](https://img.shields.io/badge/No%20AI-Pure%20Canvas-green)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=flat&logo=github&logoColor=white)
+![WIP](https://img.shields.io/badge/Status-⚠️%20pre--release%20version!-d93f0b)
+![No AI](https://img.shields.io/badge/No%20AI-Pure%20Canvas-2da44e)
+![License](https://img.shields.io/badge/License-MIT-0969da)
+![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-24292f?style=flat&logo=github&logoColor=white)
 
 > Transform images into authentic PS1-era graphics with hardware-accurate visual effects
 
-<img width="1919" height="936" alt="image" src="https://github.com/user-attachments/assets/fe353339-3e53-4fc3-8962-33b6472fdf54" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d1eb4df3-2991-4ba9-9103-034ffde010eb"/>
 
 ## Quick Start
 
@@ -16,17 +16,6 @@ npm run dev
 ```
 
 Open `http://localhost:5173`
-
-## What It Does
-
-Recreates PlayStation 1 visual style by simulating hardware limitations:
-
-- **Pixelation** - Low resolution graphics
-- **15-bit Color** - Limited color palette (32,768 colors)
-- **Vertex Wobble** - Texture warping from affine mapping
-- **Dithering** - Bayer or PSX 2x2 patterns
-- **RGB Shift** - Analog video color separation
-- **Texture Artifacts** - VRAM page boundaries
 
 ## How It Works
 
