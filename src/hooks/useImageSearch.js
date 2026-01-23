@@ -70,6 +70,12 @@ export const useImageSearch = () => {
     }
   };
 
+  const handleImageUpload = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setImages([imageUrl]);
+    setUseFallback(false);
+  };
+
   return {
     searchQuery,
     setSearchQuery,
@@ -80,5 +86,6 @@ export const useImageSearch = () => {
     handleSearch,
     handleImageSelect,
     handleCopyImageUrl,
+    handleImageUpload,
   };
 };

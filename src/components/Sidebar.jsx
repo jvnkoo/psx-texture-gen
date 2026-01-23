@@ -1,5 +1,6 @@
 import React from "react";
 import SearchCard from "./controlCards/SearchCard";
+import UploadCard from "./controlCards/UploadCard";
 import ControlCard from "./controlCards/ControlCard";
 import RgbShiftCard from "./controlCards/RgbShiftCard";
 import DitheringCard from "./controlCards/DitheringCard";
@@ -12,6 +13,7 @@ const Sidebar = ({
   setSearchQuery,
   isLoading,
   handleSearch,
+  handleImageUpload,
   noiseScale,
   setNoiseScale,
   pixelSize,
@@ -54,6 +56,8 @@ const Sidebar = ({
         isLoading={isLoading}
         handleSearch={handleSearch}
       />
+
+      <UploadCard onImageUpload={handleImageUpload} />
 
       <ControlCard
         noiseScale={noiseScale}

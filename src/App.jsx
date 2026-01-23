@@ -39,6 +39,7 @@ const App = () => {
             setSearchQuery={imageSearch.setSearchQuery}
             isLoading={imageSearch.isLoading}
             handleSearch={imageSearch.handleSearch}
+            handleImageUpload={imageSearch.handleImageUpload}
             // PSX settings props
             noiseScale={psxSettings.noiseScale}
             setNoiseScale={psxSettings.setNoiseScale}
