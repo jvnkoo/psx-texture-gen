@@ -49,6 +49,8 @@ Each effect simulates a specific PS1 hardware limitation.
 - [x] refactor code
 - [ ] add more search services
 - [ ] make the elements fit on the screen
+- [ ] rewrite in dart?
+- [ ] add 'random' button
 
 ---
 <img src="https://media1.tenor.com/m/Lx6ipmgUZwUAAAAC/cold-winter.gif" width="1000" height="300" alt="Demo">
